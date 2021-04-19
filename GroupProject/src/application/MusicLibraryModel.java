@@ -3,8 +3,10 @@ package application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -32,9 +34,17 @@ public class MusicLibraryModel {
 		this.mp.play();
 	}
 	
+	public void addSong(String fileName, String songFilePath) {		
+		SongModel song = new SongModel(fileName, "", "", songFilePath);
+		// Save to our directory
+		song.saveData();
+		// Add to our current library
+		this.library.add(song);
+	}
+	
 	public void load() {
 		
-		File folder = new File("/resources/metadata/");
+		File folder = new File("resources/metadata/");
 		File[] listOfFiles = folder.listFiles();
 
 		for (File file : listOfFiles) {

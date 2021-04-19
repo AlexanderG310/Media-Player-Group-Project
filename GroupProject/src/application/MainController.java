@@ -1,12 +1,23 @@
 package application;
 
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class MainController {
 
     @FXML
     private Button libraryBtn;
+    
+    @FXML
+    private AnchorPane mainPanel;
     
     private MusicLibraryModel ml;
     
@@ -16,10 +27,10 @@ public class MainController {
     	ml.load();
     }
 
-	/*@FXML
+	@FXML
 	public void libraryBtnEvent(ActionEvent event) throws IOException {
 
-		FXMLLoader fl = new FXMLLoader(getClass().getResource("NeedGive.fxml"));
+		FXMLLoader fl = new FXMLLoader(getClass().getResource("LibraryView.fxml"));
 
 		mainPanel = fl.load();
 
@@ -27,13 +38,12 @@ public class MainController {
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-		NeedGiveController controller = fl.getController();
-		controller.setNeed(true);
-		controller.setModel(this.model);
+		LibraryController controller = fl.getController();
+		controller.setMusicLibrary(ml);
 
 		window.setScene(scene);
 		window.show();
-	}*/
+	}
     
     
 }
