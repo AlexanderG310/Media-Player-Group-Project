@@ -39,6 +39,8 @@ public class MusicLibraryModel {
 		//song.saveData();
 		song.saveMedia();
 		
+		System.out.print(song.getDuration());
+		
 		// Add to our current library
 		this.library.add(song);
 	}
