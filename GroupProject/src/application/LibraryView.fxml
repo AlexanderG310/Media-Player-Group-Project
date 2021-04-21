@@ -15,8 +15,8 @@
          <children>
             <TableView fx:id="libraryDisplay" layoutX="13.0" layoutY="13.0" prefHeight="420.0" prefWidth="370.0">
               <columns>
-                <TableColumn prefWidth="285.0" text="Name" />
-                <TableColumn fx:id="library" minWidth="0.0" prefWidth="84.0" text="Time" />
+                <TableColumn fx:id="nameDisplay" prefWidth="285.0" text="Name" />
+                <TableColumn fx:id="timeDisplay" minWidth="0.0" prefWidth="84.0" text="Duration" />
               </columns>
             </TableView>
             <ScrollBar fx:id="libraryScroller" layoutX="383.0" layoutY="13.0" orientation="VERTICAL" prefHeight="420.0" prefWidth="18.0" />

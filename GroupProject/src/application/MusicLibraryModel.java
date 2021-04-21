@@ -3,10 +3,8 @@ package application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,11 +33,25 @@ public class MusicLibraryModel {
 	}
 	
 	public void addSong(String fileName, String songFilePath) {		
-		SongModel song = new SongModel(fileName, "", "", songFilePath);
+		SongModel song = new SongModel(fileName, "", "", "");
+		song.setExternalPath(songFilePath);
 		// Save to our directory
-		song.saveData();
+		//song.saveData();
+		song.saveMedia();
+		
 		// Add to our current library
 		this.library.add(song);
+	}
+	
+	public ArrayList<SongModel> getLibrary() {
+		return this.library;
+	}
+	
+	public String readData(Scanner scanner) {
+		if(scanner.hasNextLine()) {
+			return scanner.nextLine();
+		}
+		return "";
 	}
 	
 	public void load() {
@@ -56,28 +68,32 @@ public class MusicLibraryModel {
 			        // Read title
 					String title = "";
 					try {
-						title = URLDecoder.decode(myReader.nextLine(), "UTF-8");
+						title = URLDecoder.decode(this.readData(myReader), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
 					// Read music path
-					String musicPath = myReader.nextLine();
+					String musicPath = this.readData(myReader);
 					
 					// Read album art path
-					String artPath = myReader.nextLine();
+					String artPath = this.readData(myReader);
 					
 					// Read description
 					String description = "";
 					try {
-						description = URLDecoder.decode(myReader.nextLine(), "UTF-8");
+						description = URLDecoder.decode(this.readData(myReader), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
+					// Ready Duration
+					String duration = this.readData(myReader);
+					
 					SongModel song = new SongModel(title, description, artPath, musicPath);
+					song.setDuration(duration);
 					this.library.add(song);
 			      
 					myReader.close();

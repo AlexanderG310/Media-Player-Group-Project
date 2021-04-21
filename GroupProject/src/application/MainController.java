@@ -40,10 +40,12 @@ public class MainController {
 
 		LibraryController controller = fl.getController();
 		controller.setMusicLibrary(ml);
+		controller.displayLibrary();
 
 		window.setScene(scene);
 		window.show();
 	}
     
     
+	
 }
