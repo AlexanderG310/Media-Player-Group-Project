@@ -47,6 +47,8 @@ public class MainController {
 		LibraryController controller = fl.getController();
 		controller.setMusicLibrary(ml);
 		controller.displayLibrary();
+		// Set focus/select index to begin at 0
+		controller.setIndex(0);
 		
 		window.setScene(scene);
 		window.show();

@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -71,21 +72,31 @@ public class LibraryController {
     
     private boolean userControlTime = false;
     
+    private boolean shuffleSongs = false;
+        
     // Add specific behaviors at initialization
     public void initialize() {
-        /*this.seek.valueProperty().addListener((obs, oldValue, newValue) -> {
-        	if(this.mp != null) {
-        		Duration duration = this.mp.getTotalDuration();
-        		this.mp.seek(duration.multiply(this.seek.getValue() / 100.0));
-        	} 
-        });*/
+ 
+    	// initialize volume to max
+    	volumeSlider.setValue(volumeSlider.getMax());
     	
+    	// Handle volume set by user
+    	volumeSlider.setOnMouseDragged(event -> {
+    		if(this.mp != null) {
+    			double volume = this.volumeSlider.getValue();
+    			this.mp.setVolume(volume*0.01);
+    		}
+    	});
+    	
+    	// Slider clicked by user, set flag to avoid interference
+    	// when the time slider is auto updating.
     	seek.setOnMousePressed(event -> {
     		if(this.mp != null) {
     			userControlTime = true;
     		}
     	});
     	
+    	// Re-enable auto time slider update
     	seek.setOnMouseReleased(event -> {
     		if(this.mp != null) {
         		Duration duration = this.mp.getTotalDuration();
@@ -94,6 +105,7 @@ public class LibraryController {
         	}
         });
         
+    	// Play song when double-clicking a row in the table
         libraryDisplay.setRowFactory( tv -> {
             TableRow<SongModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -104,17 +116,6 @@ public class LibraryController {
             return row ;
         });
         
-        /*mp.currentTimeProperty().addListener((observableValue, oldDuration, newDuration) -> {
-		     System.out.println("Player:" + observableValue + " | Changed from playing at: " + oldDuration + " to play at " + newDuration);
-		});*/
-        
-        /*mp.currentTimeProperty().addListener(new InvalidationListener() 
-        {
-            public void invalidated(Observable ov) {
-                updateValues();
-            }
-        });*/
- 
     }
     
     @FXML
@@ -135,14 +136,24 @@ public class LibraryController {
     			this.currentSong = newSong;
     	    	File f = new File(newSong.getSongPath().toString());
     	    	this.mp = new MediaPlayer(new Media(f.toURI().toString()));
+    	    	double volume = this.volumeSlider.getValue();
+    			this.mp.setVolume(volume*0.01);
     	    	this.mp.play();
+    	        mp.setOnEndOfMedia(() -> {
+    	        	if(shuffleSongs) {
+    	        		shuffle();
+    	        	}
+    	        	else {
+    	        		next();
+    	        	}
+    	        });
+    	    	// The time slider gets incremented as media plays
     	    	mp.currentTimeProperty().addListener((observableValue, oldDuration, newDuration) -> {
     	    		if(!userControlTime) {
 	    	    		Duration currentTime = mp.getCurrentTime();
 	    	    		Duration duration = mp.getTotalDuration();
 	    	    		seek.setValue(currentTime.divide(duration.toMillis()).toMillis()
 	  		                  * 100.0);
-	    	    		//updateValues();
     	    		}
     			});
     		}
@@ -152,17 +163,111 @@ public class LibraryController {
 			this.currentSong = newSong;
 	    	File f = new File(newSong.getSongPath().toString());
 	    	this.mp = new MediaPlayer(new Media(f.toURI().toString()));
+	    	double volume = this.volumeSlider.getValue();
+			this.mp.setVolume(volume*0.01);
 	    	this.mp.play();
+  	        mp.setOnEndOfMedia(() -> {
+	        	if(shuffleSongs) {
+	        		shuffle();
+	        	}
+	        	else {
+	        		next();
+	        	}
+	        });
 	    	mp.currentTimeProperty().addListener((observableValue, oldDuration, newDuration) -> {
 	    		if(!userControlTime) {
 		    		Duration currentTime = mp.getCurrentTime();
 		    		Duration duration = mp.getTotalDuration();
 		    		seek.setValue(currentTime.divide(duration.toMillis()).toMillis()
 			                  * 100.0);
-		    		//updateValues();
 	    		}
 			});
     	}
+    }
+    
+    @FXML
+    public void nextSongBtn(ActionEvent event) {
+    	this.next();
+    }
+    
+    public void next() {
+    	// get next song on the list
+    	int index = libraryDisplay.getSelectionModel().getSelectedIndex();
+    	int max = libraryDisplay.getItems().size();
+    	index++;
+    	System.out.println("Next: " + index);
+    	if(index > max-1) {
+    		index = 0;
+    	}
+    	libraryDisplay.getSelectionModel().select(index);
+    	libraryDisplay.getFocusModel().focus(index);
+    	play();
+    }
+    
+    @FXML
+    public void prevSongBtn(ActionEvent event) {
+    	this.prev();
+    }
+    
+    public void prev() {
+    	// get prev song on the list
+    	int index = libraryDisplay.getSelectionModel().getSelectedIndex();
+    	int min = 0;
+    	index--;
+    	if(index < min) {
+    		index = libraryDisplay.getItems().size()-1;
+    	}
+    	libraryDisplay.getSelectionModel().select(index);
+    	libraryDisplay.getFocusModel().focus(index);
+    	play();
+    }
+    
+    @FXML
+    public void shuffleBtn(ActionEvent event) {
+    	if(shuffleSongs) {
+    		shuffleSongs = false;
+    	}
+    	else {
+    		shuffleSongs = true;
+    	}
+    }
+    
+    public void shuffle() {
+    	int index = libraryDisplay.getSelectionModel().getSelectedIndex();
+    	int newIndex = index;
+    	while(index == newIndex) {
+    		newIndex = randomIndex();
+    	}
+    	System.out.println(newIndex);
+		libraryDisplay.getSelectionModel().select(newIndex);
+    	libraryDisplay.getFocusModel().focus(newIndex);
+    	play();
+    }
+    
+    public int randomIndex() {
+    	Random rand = new Random();
+		int randN = rand.nextInt(libraryDisplay.getItems().size());
+		return randN;
+    }
+    
+    @FXML
+    public void muteBtn(ActionEvent event) {
+    	if(this.mp != null) {
+    		if(mp.getVolume() == 0) {
+    			mp.setVolume(1.0);
+    		}
+    		else {
+    			mp.setVolume(0);
+    		}
+    	}
+
+		if(volumeSlider.getValue() == volumeSlider.getMin()) {
+			volumeSlider.setValue(volumeSlider.getMax());
+		}
+		else {
+			volumeSlider.setValue(volumeSlider.getMin());
+		}
+    	
     }
     
     @FXML
@@ -205,6 +310,11 @@ public class LibraryController {
 		return this.mp;
 	}
 	
+	public void setIndex(int index) {
+    	libraryDisplay.getSelectionModel().select(0);
+    	libraryDisplay.getFocusModel().focus(0);
+	}
+	
 	@FXML
 	public void displayLibrary() {
 		/*final ObservableList<SongModel> data = FXCollections.observableArrayList(
@@ -218,68 +328,5 @@ public class LibraryController {
 		libraryDisplay.setItems(data);
 		
 	}
-	
-	protected void updateValues() {
-		  //if (playTime != null && seek != null && volumeSlider != null) {
-			if (seek != null) {
-		     Platform.runLater(new Runnable() {
-		        public void run() {
-		          Duration duration = mp.getTotalDuration();
-		          Duration currentTime = mp.getCurrentTime();
-		          //playTime.setText(formatTime(currentTime, duration));
-		          seek.setDisable(duration.isUnknown());
-		          if (!seek.isDisabled() 
-		            && duration.greaterThan(Duration.ZERO) 
-		            && !seek.isValueChanging()) {
-		        	  seek.setValue(currentTime.divide(duration.toMillis()).toMillis()
-		                  * 100.0);
-		          }
-		          /*if (!volumeSlider.isValueChanging()) {
-		            volumeSlider.setValue((int)Math.round(mp.getVolume() 
-		                  * 100));
-		          }*/
-		        }
-		     });
-		  }
-		}
-	
-	private static String formatTime(Duration elapsed, Duration duration) {
-		   int intElapsed = (int)Math.floor(elapsed.toSeconds());
-		   int elapsedHours = intElapsed / (60 * 60);
-		   if (elapsedHours > 0) {
-		       intElapsed -= elapsedHours * 60 * 60;
-		   }
-		   int elapsedMinutes = intElapsed / 60;
-		   int elapsedSeconds = intElapsed - elapsedHours * 60 * 60 
-		                           - elapsedMinutes * 60;
-		 
-		   if (duration.greaterThan(Duration.ZERO)) {
-		      int intDuration = (int)Math.floor(duration.toSeconds());
-		      int durationHours = intDuration / (60 * 60);
-		      if (durationHours > 0) {
-		         intDuration -= durationHours * 60 * 60;
-		      }
-		      int durationMinutes = intDuration / 60;
-		      int durationSeconds = intDuration - durationHours * 60 * 60 - 
-		          durationMinutes * 60;
-		      if (durationHours > 0) {
-		         return String.format("%d:%02d:%02d/%d:%02d:%02d", 
-		            elapsedHours, elapsedMinutes, elapsedSeconds,
-		            durationHours, durationMinutes, durationSeconds);
-		      } else {
-		          return String.format("%02d:%02d/%02d:%02d",
-		            elapsedMinutes, elapsedSeconds,durationMinutes, 
-		                durationSeconds);
-		      }
-		      } else {
-		          if (elapsedHours > 0) {
-		             return String.format("%d:%02d:%02d", elapsedHours, 
-		                    elapsedMinutes, elapsedSeconds);
-		            } else {
-		                return String.format("%02d:%02d",elapsedMinutes, 
-		                    elapsedSeconds);
-		            }
-		        }
-		    }
 	
 }

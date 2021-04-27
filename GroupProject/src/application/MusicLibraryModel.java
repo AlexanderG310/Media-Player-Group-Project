@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import javafx.scene.media.Media;
@@ -30,6 +31,39 @@ public class MusicLibraryModel {
 		// Feed the path for the song into the media player
 		this.mp = new MediaPlayer(new Media(songPath.toString()));
 		this.mp.play();
+	}
+	
+	public SongModel next() {
+		this.currentIndex++;
+		if(this.library.size()-1 < this.currentIndex) {
+			this.currentIndex = 0;
+		}
+		return this.library.get(this.currentIndex);
+	}
+	
+	public SongModel prev() {
+		this.currentIndex--;
+		if(this.currentIndex < 0) {
+			this.currentIndex = this.library.size();
+		}
+		return this.library.get(this.currentIndex);
+	}
+	
+	public SongModel shuffle() {
+		Random rand = new Random();
+		// Obtain a number between [0 - 49].
+		int randN = rand.nextInt(this.library.size());
+		// Make sure to avoid getting same number
+		if(randN == this.currentIndex) {
+			this.shuffle();
+		}
+		
+		this.currentIndex = randN;
+		return this.library.get(this.currentIndex);
+	}
+	
+	public void setIndex(int index) {
+		this.currentIndex = index;
 	}
 	
 	public void addSong(String fileName, String songFilePath) {		
