@@ -9,8 +9,8 @@ Team Name:
 CS3443 Scene Builder Pros
 
 Team Members:
-Cooper Wineberg
-Alan Mendoza
+Cooper Wineberg,
+Alan Mendoza,
 Alejandro Garcia
 
 Description:
