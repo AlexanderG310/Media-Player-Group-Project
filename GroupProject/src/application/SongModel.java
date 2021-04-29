@@ -38,49 +38,17 @@ public class SongModel {
 		if(songPath != "") {
 			this.songPath = Paths.get(songPath);
 			
-						
-			/*File dir = new File("resources/music");
-			File[] files = dir.listFiles();
-			if(files != null) {
-				for(File file : files) {
-					System.out.println(file.toURI().toString());
-					new Media(file.toURI().toString();
-					//new Media("file:///C:/Users/Alejandro/git/repository/GroupProject/resources/music/gymnopedie.mp3");
-				}
-			}*/
-			
-			/*File f = new File(songPath);
-			System.out.println(f.toURI().toString());
-			this.media = new Media(f.toURI().toString());
-			MediaPlayer mp = new MediaPlayer(this.media);
-			
-			mp.setOnReady(new Runnable() {
-
-				Media m = mp.getMedia();
-				
-		        @Override
-		        public void run() {
-
-		        	String dur = String.format("%.2f", m.getDuration().toMinutes());
-		        	//double b = new BigDecimal(m.getDuration().toMinutes()).setScale(2, RoundingMode.HALF_UP).doubleValue();
-		            System.out.println("Duration: "+ dur);
-
-		            // display media's metadata
-		            for (Map.Entry<String, Object> entry : m.getMetadata().entrySet()){
-		                System.out.println(entry.getKey() + ": " + entry.getValue());
-		            }
-
-		            // play if you want
-		           // mediaPlayer.play();
-		        }
-		    });*/
-			
-			//this.duration = "";
-			//System.out.println(this.duration);
+		
 		}
 
 	}
 	
+	/*
+	 * Workaround function that temporarily initializes a 
+	 * media player in order to fetch information like
+	 * duration, etc. Anything that can only be provided
+	 * when a media player is set to ready
+	 */
 	public void saveMedia() {
 		File f = new File(this.songPath.toString());
 		MediaPlayer mp = new MediaPlayer(new Media(f.toURI().toString()));
@@ -99,6 +67,11 @@ public class SongModel {
 		
 	}
 
+	/*
+	 * Handles saving the song into the proper resources folder
+	 * and writing it in a specific format to support loading
+	 * it later
+	 */
 	public void saveData() {
 		
 		// Create new file with unique identifier
@@ -111,19 +84,12 @@ public class SongModel {
 			Path musicDest = Paths.get("resources/music/" + song.getName());
 			
 			// Check if song already exists within our own folder
-			//File musicFolder = new File(musicDest.toString());
-			
-			//if(!musicFolder.exists()) {
 				try {
 					FileWriter myWriter = new FileWriter(metaPath);
 					// Format/Write title
-					//myWriter.write(URLEncoder.encode(this.title, "UTF-8").toString() + "\n");
+
 					myWriter.write(this.title + "\n");
-					//myWriter.write(musicDest.toString() + song.getName() + "\n");
-					
-					//myWriter.write(musicDest.toString() + "\n");
-					//this.songPath = musicDest;
-					
+
 					//we just continue to support the existing path without changing it
 					if(this.songPath != null) {
 						myWriter.write(this.songPath.toString()+"\n");
@@ -156,14 +122,6 @@ public class SongModel {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			//}
-			
-			/*try {
-				Files.copy(this.externalPath, musicDest);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
 			
 		}
 	}
@@ -200,6 +158,11 @@ public class SongModel {
 		this.songPath = songPath;
 	}
 
+	/*
+	 * We use this function to copy the music when it's first added
+	 * and then later invoke the saveData function for saving
+	 * all other information
+	 */
 	public void setExternalPath(String songFilePath) {
 		this.externalPath = Paths.get(songFilePath);
 		

@@ -5,30 +5,37 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="480.0" maxWidth="720.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LibraryController">
    <children>
       <AnchorPane layoutX="-1.0" layoutY="-1.0" prefHeight="480.0" prefWidth="720.0">
          <children>
+            <ToggleButton fx:id="shuffleToggle" layoutX="521.0" layoutY="435.0" mnemonicParsing="false" onAction="#shuffleBtn" prefHeight="35.0" prefWidth="35.0" text="🔀" />
+            <ToggleButton fx:id="volToggle" layoutX="603.0" layoutY="435.0" mnemonicParsing="false" onAction="#muteBtn" prefHeight="35.0" prefWidth="35.0" text="🔊" />
             <TableView fx:id="libraryDisplay" layoutX="13.0" layoutY="13.0" prefHeight="420.0" prefWidth="370.0">
               <columns>
                 <TableColumn fx:id="nameDisplay" prefWidth="285.0" text="Name" />
                 <TableColumn fx:id="timeDisplay" minWidth="0.0" prefWidth="84.0" text="Duration" />
               </columns>
             </TableView>
-            <TextArea layoutX="415.0" layoutY="13.0" prefHeight="240.0" prefWidth="290.0" />
-            <Button fx:id="play" layoutX="455.0" layoutY="434.0" mnemonicParsing="false" onAction="#playBtn" prefHeight="35.0" prefWidth="35.0" text="▶" />
-            <Button fx:id="backward" layoutX="415.0" layoutY="434.0" mnemonicParsing="false" onAction="#prevSongBtn" prefHeight="35.0" prefWidth="35.0" text="⏪" />
-            <Button fx:id="pause" layoutX="495.0" layoutY="434.0" mnemonicParsing="false" onAction="#pauseBtn" prefHeight="35.0" prefWidth="35.0" text="⏸" />
-            <Button fx:id="forward" layoutX="536.0" layoutY="434.0" mnemonicParsing="false" onAction="#nextSongBtn" prefHeight="35.0" prefWidth="35.0" text="⏩" />
-            <Slider fx:id="volumeSlider" layoutX="630.0" layoutY="440.0" prefHeight="25.0" prefWidth="70.0" />
-            <Button fx:id="muteUnmute" layoutX="590.0" layoutY="434.0" mnemonicParsing="false" onAction="#muteBtn" prefHeight="35.0" prefWidth="35.0" text="M" />
-            <Label layoutX="416.0" layoutY="368.0" prefHeight="21.0" prefWidth="44.0" text="Time:" />
-            <Slider fx:id="seek" layoutX="415.0" layoutY="396.0" prefHeight="18.0" prefWidth="290.0" />
+            <Button fx:id="play" layoutX="440.0" layoutY="435.0" mnemonicParsing="false" onAction="#playBtn" prefHeight="35.0" prefWidth="35.0" text="▶" />
+            <Button fx:id="backward" layoutX="399.0" layoutY="435.0" mnemonicParsing="false" onAction="#prevSongBtn" prefHeight="35.0" prefWidth="35.0" text="⏮" />
+            <Button fx:id="pause" layoutX="481.0" layoutY="435.0" mnemonicParsing="false" onAction="#pauseBtn" prefHeight="35.0" prefWidth="35.0" text="⏸" />
+            <Button fx:id="forward" layoutX="561.0" layoutY="435.0" mnemonicParsing="false" onAction="#nextSongBtn" prefHeight="35.0" prefWidth="35.0" text="⏭" />
+            <Slider fx:id="volumeSlider" layoutX="642.0" layoutY="440.0" prefHeight="25.0" prefWidth="70.0" />
+            <Label layoutX="407.0" layoutY="373.0" prefHeight="21.0" prefWidth="44.0" text="Time:" />
+            <Slider fx:id="seek" layoutX="408.0" layoutY="402.0" prefHeight="18.0" prefWidth="290.0" />
             <Button fx:id="uploadMusic" layoutX="13.0" layoutY="437.0" mnemonicParsing="false" onAction="#multiFileChooser" prefHeight="31.0" prefWidth="370.0" text="Add Media File" />
-            <Button layoutX="665.0" layoutY="348.0" mnemonicParsing="false" onAction="#shuffleBtn" prefHeight="31.0" prefWidth="35.0" text="🔀" />
+            <ImageView fx:id="albumCover" fitHeight="200.0" fitWidth="200.0" layoutX="399.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+            <Label layoutX="399.0" layoutY="215.0" prefHeight="21.0" prefWidth="55.0" text="Title:" />
+            <Label layoutX="399.0" layoutY="257.0" prefHeight="21.0" prefWidth="55.0" text="Album:" />
+            <Label layoutX="399.0" layoutY="236.0" prefHeight="21.0" prefWidth="55.0" text="Artist:" />
+            <Label fx:id="title" layoutX="454.0" layoutY="215.0" prefHeight="21.0" prefWidth="255.0" />
+            <Label fx:id="artist" layoutX="454.0" layoutY="236.0" prefHeight="21.0" prefWidth="255.0" />
+            <Label fx:id="album" layoutX="454.0" layoutY="257.0" prefHeight="21.0" prefWidth="255.0" />
          </children>
       </AnchorPane>
    </children>

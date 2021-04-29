@@ -7,6 +7,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
 
 
+/* 
+ * 
+ * Displays the main menu which unfortunately did not get finished because of time.
+ * 
+ */
+
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {

@@ -33,6 +33,11 @@ public class MainController {
     	ml.load();
     }
 
+    /*
+     * Main Controller handles transitioning into our music library
+     * scene and also assist in initializing our controller for
+     * the library scene
+     */
 	@FXML
 	public void libraryBtnEvent(ActionEvent event) throws IOException {
 

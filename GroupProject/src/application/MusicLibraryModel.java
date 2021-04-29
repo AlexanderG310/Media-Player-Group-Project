@@ -12,6 +12,11 @@ import java.util.Scanner;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+/*
+ * When a button is pressed or something is used in the Media Player Scene, if needed a function will be called here
+ * 
+ */
+
 public class MusicLibraryModel {
 	private ArrayList<SongModel> library;
 	 // Used to identify current song playing on the library
@@ -19,11 +24,19 @@ public class MusicLibraryModel {
 	private SongModel currentSong;
 	private MediaPlayer mp;
 	
+	/*
+	 * Initialize our library and set the current index by default
+	 */
 	public MusicLibraryModel() {
 		this.library = new ArrayList<SongModel>();
 		this.currentIndex = 0;
 	}
 	
+	/*
+	 * Not used since we learned that we can drive
+	 * most of the functionality through the tableview/controller
+	 * instead of our model
+	 */
 	public void play() {
 		// Get current song from library
 		this.currentSong = this.library.get(currentIndex);
@@ -33,6 +46,11 @@ public class MusicLibraryModel {
 		this.mp.play();
 	}
 	
+	/*
+	 * Not used since we learned that we can drive
+	 * most of the functionality through the tableview/controller
+	 * instead of our model
+	 */
 	public SongModel next() {
 		this.currentIndex++;
 		if(this.library.size()-1 < this.currentIndex) {
@@ -41,6 +59,11 @@ public class MusicLibraryModel {
 		return this.library.get(this.currentIndex);
 	}
 	
+	/*
+	 * Not used since we learned that we can drive
+	 * most of the functionality through the tableview/controller
+	 * instead of our model
+	 */
 	public SongModel prev() {
 		this.currentIndex--;
 		if(this.currentIndex < 0) {
@@ -49,6 +72,11 @@ public class MusicLibraryModel {
 		return this.library.get(this.currentIndex);
 	}
 	
+	/*
+	 * Not used since we learned that we can drive
+	 * most of the functionality through the tableview/controller
+	 * instead of our model
+	 */
 	public SongModel shuffle() {
 		Random rand = new Random();
 		// Obtain a number between [0 - 49].
@@ -62,19 +90,25 @@ public class MusicLibraryModel {
 		return this.library.get(this.currentIndex);
 	}
 	
+	/*
+	 * Not used since we learned that we can drive
+	 * most of the functionality through the tableview/controller
+	 * instead of our model
+	 */
 	public void setIndex(int index) {
 		this.currentIndex = index;
 	}
 	
+	/*
+	 * Used to copy/save the song added to our resources
+	 * folder and add into our library.
+	 */
 	public void addSong(String fileName, String songFilePath) {		
 		SongModel song = new SongModel(fileName, "", "", "");
 		song.setExternalPath(songFilePath);
 		// Save to our directory
-		//song.saveData();
 		song.saveMedia();
-		
-		System.out.print(song.getDuration());
-		
+			
 		// Add to our current library
 		this.library.add(song);
 	}
@@ -83,6 +117,10 @@ public class MusicLibraryModel {
 		return this.library;
 	}
 	
+	/*
+	 * Handle setting our values when we read data
+	 * from our resources folder
+	 */
 	public String readData(Scanner scanner) {
 		if(scanner.hasNextLine()) {
 			return scanner.nextLine();
@@ -90,6 +128,10 @@ public class MusicLibraryModel {
 		return "";
 	}
 	
+	/*
+	 * Loads all path/extra data our application
+	 * needs from the metadata folder under resources
+	 */
 	public void load() {
 		
 		File folder = new File("resources/metadata/");
