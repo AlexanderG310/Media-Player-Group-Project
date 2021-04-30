@@ -30,7 +30,33 @@ Functionality:
 Known bugs: 
 - There is an issue with the seek slider, if you press rapidly underneath the line it will make the song stutter.
 - Even though a song can be x minutes long, some extra seconds get added on and thus the player will have a few seconds of silence.
-- You unfortunately have to close and reopen the program for a songs duration to be displayed. -> (Not really a bug, but more of a limitation)
+- You unfortunately have to close and reopen the program for a songs duration to be displayed.
+- Duration is displayed as a decimal rather than your standard HH:mm:ss.
 
 Cloning Instructions:
+- Go to "https://github.com/AlexanderG310/Media-Player-Group-Project" or search for "AlexanderG310/Media-Player-Group-Project" on Github.com
+- Click on the button that says "Code" and then click on "Download ZIP"
+- Click on "GroupProject"
+
+ON ECLIPSE:
+- Click on the "File" tab and then click on "Import"
+
+- "Import" window will open 
+-     Click on arrow next to "Git" and then click on "Projects from Git"
+-     Click on "Next"
+
+- "Import Projects from Git" window will open
+-     Click on "Clone URI"
+-     Click on "Next"
+-         Click on "URI" and paste "https://github.com/AlexanderG310/Media-Player-Group-Project"
+-         Click "Next"
+-             Under "Tag fetching strategy" click on "Fetch all tags and their commits"
+-             Click "Next"
+-                 Click on the checkbox "Clone submodules"
+-                 Click "Next"
+-                     Select "Import existing Eclipse projects"
+-                     Click "Next"
+-                         Click "Finish"
+-
+-  The program can now be ran in Eclipse
 
