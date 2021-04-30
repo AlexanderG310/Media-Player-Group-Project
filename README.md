@@ -30,8 +30,7 @@ Functionality:
 Known bugs: 
 - There is an issue with the seek slider, if you press rapidly underneath the line it will make the song stutter.
 - Even though a song can be x minutes long, some extra seconds get added on and thus the player will have a few seconds of silence.
-- You unfortunately have to close and reopen the program for a songs duration to be displayed.
-- Duration is displayed as a decimal rather than your standard HH:mm:ss.
+- You unfortunately have to close and reopen the program for a songs duration to be displayed ( Not Really a bug, but more of a limitation ).
 
 Cloning Instructions:
 - Go to "https://github.com/AlexanderG310/Media-Player-Group-Project" or search for "AlexanderG310/Media-Player-Group-Project" on Github.com
